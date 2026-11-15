@@ -1,0 +1,62 @@
+# Docker config
+# Backends listen internally on 9000. Each edge exposes one host port per backend.
+# Port scheme:
+#   Nginx: 8081 express / 8082 fastapi / 8083 go
+#   Caddy: 8181 express / 8182 fastapi / 8183 go
+#   Apache: 8281 express
+#   Envoy: 8381 express
+
+services:
+  # backend
+  express:
+    build: ./backends/express
+    networks: [dockernet]
+    expose: ["9000"]
+
+  fastapi:
+    build: ./backends/fastapi
+    networks: [dockernet]
+    expose: ["9000"]
+
+  go:
+    build: ./backends/go-nethttp
+    networks: [dockernet]
+    expose: ["9000"]
+
+  # Edges
+  nginx:
+    build: ./edges/nginx
+    depends_on: [express, fastapi, go]
+    networks: [dockernet]
+    ports:
+      - "8081:8081" # express
+      - "8082:8082" # fastapi
+      - "8083:8083" # go
+
+  caddy:
+    build: ./edges/caddy
+    depends_on: [express, fastapi, go]
+    networks: [dockernet]
+    ports:
+      - "8181:8181" # express
+      - "8182:8182" # fastapi
+      - "8183:8183" # go
+
+  apache:
+    build: ./edges/apache
+    depends_on: [express]
+    networks: [dockernet]
+    ports:
+      - "8281:8281" # expressw
+
+  envoy:
+    build: ./edges/envoy
+    depends_on: [express]
+    networks: [dockernet]
+    ports:
+      - "8381:8381" # express
+
+# setup the network for the containers to communicate with each other
+networks:
+  dockernet:
+    driver: bridge

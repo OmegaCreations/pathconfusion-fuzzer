@@ -1,0 +1,44 @@
+# Map of edge x backend pairs with the address the fuzzer sends requests to.
+# base_url is the edge entry point
+# backend is the label of the second hop.
+
+# Base paths the mutations will operate on.
+base_paths:
+  - "/admin/secret"
+  - "/public"
+  - "/files/report"
+  - "/static/app.css"
+
+# Expected edge decision for the /admin prefix with response of deny (403).
+protected_prefix: "/admin"
+
+pairs:
+  - name: nginx-express
+    edge: nginx
+    backend: express
+    base_url: "http://127.0.0.1:8081"
+
+  - name: nginx-fastapi
+    edge: nginx
+    backend: fastapi
+    base_url: "http://127.0.0.1:8082"
+
+  - name: nginx-go
+    edge: nginx
+    backend: go
+    base_url: "http://127.0.0.1:8083"
+
+  - name: caddy-express
+    edge: caddy
+    backend: express
+    base_url: "http://127.0.0.1:8181"
+
+  - name: apache-express
+    edge: apache
+    backend: express
+    base_url: "http://127.0.0.1:8281"
+
+  - name: envoy-express
+    edge: envoy
+    backend: express
+    base_url: "http://127.0.0.1:8381"

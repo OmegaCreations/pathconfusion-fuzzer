@@ -1,0 +1,10 @@
+{
+  "name": "pathconfusion-backend-express",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Diagnostic backend for pathconfusion-fuzzer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
