@@ -12,6 +12,9 @@ base_paths:
 # Expected edge decision for the /admin prefix with response of deny (403).
 protected_prefix: "/admin"
 
+# secret the fuzzer will try to get
+secret_marker: "SECRET_1234"
+
 pairs:
   - name: nginx-express
     edge: nginx
