@@ -15,7 +15,17 @@ protected_prefix: "/admin"
 # secret the fuzzer will try to get
 secret_marker: "SECRET_1234"
 
+# Traversal target injected by the query-fragment technique (no hardcoding in code).
+injection_target: "/admin/secret"
+
 pairs:
+  # Debugging pairs to validate the fuzzer and observe the backend's own normalization.
+  - name: dev-express
+    edge: none
+    backend: express
+    base_url: "http://127.0.0.1:9000"
+
+  # Production pairs
   - name: nginx-express
     edge: nginx
     backend: express
